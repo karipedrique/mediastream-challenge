@@ -9,7 +9,7 @@ Find the total sum of the top-3 most selling hats.
 We don't care which hats are.
 You can use lodash/underscore (recommended)
 
-What is the complexity in O() notation of time and space?
+What is the complexity in O(n^2) notation of time and space?
 
 IMPORTANT: Find a balance between performance and legibility (more important).
 
@@ -30,8 +30,32 @@ const assert = require('assert');
 
 const database = require('./database.json');
 
+var total = 0 // TODO
 
-const total = 0 // TODO
+if(database.length > 0){
+  var i = 0;
+  var hats = {};
+  database.forEach(function(product, index) {
+    if(product.hats != undefined && product.hats.length > 0){
+      product.hats.forEach(function(hat){
+        if(hats[hat.id] == undefined){
+          hats[hat.id] = 1;
+        }else{
+          hats[hat.id] = hats[hat.id] + 1;
+        }
+      });
+    }
+  });
+  
+  var array = [], h;
+  for(h in hats){
+   array.push([h,hats[h]])
+  }
+  array.sort(function(a,b){return a[1] - b[1]});
+  array.reverse();
+  total = array[0][1] + array[1][1] + array[2][1];
+  console.log("total ", total, "Result "+array[0][1]+" + "+array[1][1]+" + "+array[2][1]);
+}
 
 // Throws error on failure
 assert.equal(total, 23, `Invalid result: ${total} != 23`);

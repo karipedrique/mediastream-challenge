@@ -24,7 +24,9 @@ Example:
 - react-dates: NOPE
 `);
 
-import React from 'react';
+import React, { PropTypes } from 'react';
+import { FormattedDate, IntlProvider } from 'react-intl';
+import { ListGroup, ListGroupItem } from 'react-bootstrap';
 
 export default class MyApp extends React.Component {
   render() {
@@ -46,7 +48,32 @@ export default class MyApp extends React.Component {
 
 class List extends React.Component {
   // TODO
+
+
   render() {
-    return null;
+    const style = {
+      backgroung: '#ccc',
+      textAling: 'center'
+    };
+
+    var list = (<p>No hay elementos</p>);
+    if(this.props.dates != undefined && this.props.dates.length > 0){
+      list = this.props.dates.map((date, index) => <ListGroupItem key={index} bsStyle="success" ><FormattedDate value={date} /></ListGroupItem>);
+    }
+
+    return (
+      <IntlProvider format='short' locale='en' >
+        <div>
+          <h4>Lista de Fechas</h4>
+          <ListGroup>
+            {list}
+          </ListGroup>
+        </div>
+      </IntlProvider>
+    );
   }
+}
+
+List.propTypes = {
+  dates: PropTypes.array
 }
